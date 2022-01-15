@@ -27,5 +27,9 @@ for a in linhas:
                   align_col_2=col_width[2],
                   align_col_3=col_width[3],
                   align_col_4=col_width[4]))
+
+c.execute("INSERT INTO acoes VALUES ('2019-01-05','COMPRA','APB55',24,50.27)")
+
+print(c.lastrowid)
                   
 conn.close()
