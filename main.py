@@ -86,3 +86,17 @@ db.commit();
 """
 #TODO 03 - Fechando a conexao
 db.close()
+
+def listar_clientes(self):
+    cursor.execute("SELECT * FROM cliente")
+    print(cursor.fetchall())
+
+def inserir_cliente(self, cliente):
+    cursor.execute("INSERT INTO cliente (nome, idade) VALUES (%s,%s)", cliente.nome, cliente.idade)
+
+def atualizar_cliente(self, id_Cliente, cliente):
+    cursor.execute(f"UPDATE cliente SET nome='{cliente.nome}', idade={cliente.idade} WHERE idCliente={id_Cliente};")
+
+
+def remover_cliente(self, id_Cliente):
+    cursor.execute(f"DELETE FROM cliente WHERE idCliente={id_Cliente};")
