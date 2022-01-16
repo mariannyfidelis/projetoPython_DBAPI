@@ -1,6 +1,12 @@
 #TODO 01 - Importar o pacote
 import MySQLdb
 
+#Formato ANSI C
+MySQLdb.paramstyle = "format"
+
+#Pyformat
+#MySQLdb.paramstyle = "pyformat"
+
 def inserirCliente(nome, idade, cursor):
     cursor.execute(f"INSERT INTO cliente (nome, idade) VALUES ('{nome}', {idade});")
 
@@ -21,6 +27,10 @@ def simularTransacaoCommitRollback(nome, idade, cursor, db):
     except:
         print("realizando o rollback devido uma exception ...")
         db.rollback()
+
+def evitarSQLInjection(nome, idade, idCliente, cursor, db):
+    cursor.execute("UPDATE cliente SET nome=%s, idade=%s WHERE idCliente=%s",(nome,idade,idCliente,))
+    db.commit();
 
 #TODO 02 - Configurando a conexão
 db = MySQLdb.connect(user="root", passwd="mysql", db="clientes", host="localhost", port=3306)
@@ -48,9 +58,16 @@ db.commit();
 -------------------------------------------------
 deletarCliente(10, cursor)
 db.commit();
-"""
 
 simularTransacaoCommitRollback("Tavares", 55, cursor, db)
+"""
+nome = "José Sena"
+idade= 35
+idCliente = 11
+cursor.execute("UPDATE cliente SET nome=%s, idade=%s WHERE idCliente=%s",(nome,idade,idCliente,))
+db.commit();
+
+evitarSQLInjection("Carlos Fontes", 38, 11, cursor, db)
 
 #TODO 03 - Fechando a conexao
 db.close()
