@@ -1,20 +1,47 @@
+from connection_database import FabricaConexao
+
 class ClienteRepository():
 
+    @staticmethod
     def listar_clientes():
-        cursor.execute("SELECT * FROM cliente")
-        print(cursor.fetchall())
+        fabrica = FabricaConexao.conectar()
+        try:
+            cursor = fabrica.cursor()
+            cursor.execute("SELECT * FROM cliente")
+            print(cursor.fetchall())
+        finally:
+            fabrica.close()
     
-
+    @staticmethod
     def inserir_cliente(cliente):
-        cursor.execute("INSERT INTO cliente (nome, idade) VALUES (%s,%s)", (cliente.nome, cliente.idade))
-        db.commit();
+        fabrica = FabricaConexao.conectar()
+        try:
+            cursor = fabrica.cursor()
+            cursor.execute("INSERT INTO cliente (nome, idade) VALUES (%s,%s)", (cliente.nome, cliente.idade))
+            fabrica.commit()
+        finally:
+            fabrica.close()
 
+    @staticmethod
     def atualizar_cliente(id_Cliente, cliente):
-        cursor.execute(f"UPDATE cliente SET nome='{cliente.nome}', idade={cliente.idade} WHERE idCliente={id_Cliente};")
+        fabrica = FabricaConexao.conectar()
+        try:
+            cursor = fabrica.cursor()
+            cursor.execute(f"UPDATE cliente SET nome='{cliente.nome}', idade={cliente.idade} WHERE idCliente={id_Cliente};")
+            fabrica.commit()
+        finally:
+            fabrica.close()
 
+    @staticmethod
     def remover_cliente(id_Cliente):
-        cursor.execute(f"DELETE FROM cliente WHERE idCliente={id_Cliente};")
-
+        fabrica = FabricaConexao.conectar()
+        try:
+            cursor = fabrica.cursor()
+            cursor.execute(f"DELETE FROM cliente WHERE idCliente={id_Cliente};")
+            fabrica.commit()
+        finally:
+            fabrica.close()
+#======================================================================================================            
     def inserirCliente(nome, idade, cursor):
         cursor.execute(f"INSERT INTO cliente (nome, idade) VALUES ('{nome}', {idade});")
     
