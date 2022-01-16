@@ -32,6 +32,16 @@ def evitarSQLInjection(nome, idade, idCliente, cursor, db):
     cursor.execute("UPDATE cliente SET nome=%s, idade=%s WHERE idCliente=%s",(nome,idade,idCliente,))
     db.commit();
 
+def executarVariasInsercoes(cursor, db):
+    cursor.executemany("INSERT INTO cliente (nome, idade) VALUES (%s,%s)",
+        #Cada tupla representa uma Inserção
+        {
+            ("Ana", 40),
+            ("Maria", 50),
+            ("Val", 34),
+        }
+    )
+
 #TODO 02 - Configurando a conexão
 db = MySQLdb.connect(user="root", passwd="mysql", db="clientes", host="localhost", port=3306)
 
@@ -57,10 +67,12 @@ print(cursor.fetchall())
 db.commit();
 -------------------------------------------------
 deletarCliente(10, cursor)
+print(cursor.fetchall())
 db.commit();
+print(cursor.fetchall())
 
 simularTransacaoCommitRollback("Tavares", 55, cursor, db)
-"""
+
 nome = "José Sena"
 idade= 35
 idCliente = 11
@@ -69,5 +81,8 @@ db.commit();
 
 evitarSQLInjection("Carlos Fontes", 38, 11, cursor, db)
 
+executarVariasInsercoes(cursor, db)
+db.commit();
+"""
 #TODO 03 - Fechando a conexao
 db.close()
